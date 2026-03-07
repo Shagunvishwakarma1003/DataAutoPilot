@@ -1,0 +1,11 @@
+=== Business Recommendations (Auto Generated) ===
+
+Cluster 0: Low Premium Segment(BMI Risk)
+- Recommendation: Add wellness programs+ preventive health offers.
+- Action: Risk reduction through fitness/health incentives.
+
+Cluster 1: High Premium Segment(High Risk)
+- Recommendation: Offer premium plans, upsell high coverage polices.
+- Action: Focus on retention + personalized suport (high value customer).
+- Recommendation: Add wellness programs+ preventive health offers.
+- Action: Risk reduction through fitness/health incentives.

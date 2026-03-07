@@ -1,0 +1,76 @@
+{
+  "generated_at": "2026-03-07 23:30:18",
+  "task_type": "regression",
+  "dataset_path": "",
+  "target": "EstimatedSalary",
+  "shape": [
+    10000,
+    14
+  ],
+  "best_model": "SVR",
+  "best_metric": {
+    "rmse": 57483.68838121234,
+    "mae": 49782.38974894601,
+    "r2": -0.000945445601033823
+  },
+  "notes": {},
+  "artifacts": {
+    "eda_report_txt": "output/eda/eda_report.txt",
+    "corr_heatmap_png": "output/eda/correlation_heatmap.png",
+    "feature_importance_png": "output/feature_importance.png",
+    "permutation_importance_png": "output/permutation_importance.png",
+    "shap_summary_png": "output/shap/shap_summary.png",
+    "shap_waterfall_png": "output/shap/shap_waterfall.png"
+  },
+  "all_results": [
+    {
+      "model": "LinearRegression",
+      "MAE": 54236.706246295296,
+      "RMSE": 64137.77881899339,
+      "R2": -0.24608878197317607,
+      "CV_RMSE": 63847.554713530364
+    },
+    {
+      "model": "Ridge",
+      "MAE": 53850.84871487806,
+      "RMSE": 63503.3451514864,
+      "R2": -0.2215587566551307,
+      "CV_RMSE": 63247.68205079293
+    },
+    {
+      "model": "Lasso",
+      "MAE": 54234.82771260269,
+      "RMSE": 64133.92039154133,
+      "R2": -0.24593886101758766,
+      "CV_RMSE": 63845.68801443263
+    },
+    {
+      "model": "RandomForestRegressor",
+      "MAE": 50961.25307418334,
+      "RMSE": 59020.756713059935,
+      "R2": -0.05519008488876298,
+      "CV_RMSE": 58712.1133534548
+    },
+    {
+      "model": "XGBRegressor",
+      "MAE": 50621.07639820313,
+      "RMSE": 58515.17253741432,
+      "R2": -0.03718955570869098,
+      "CV_RMSE": 58546.38929488083
+    },
+    {
+      "model": "SVR",
+      "MAE": 49782.38974894601,
+      "RMSE": 57483.68838121234,
+      "R2": -0.000945445601033823,
+      "CV_RMSE": 57521.45312366177
+    },
+    {
+      "model": "KNNRegressor",
+      "MAE": 52334.546042857146,
+      "RMSE": 61332.59406147936,
+      "R2": -0.13947243107387597,
+      "CV_RMSE": 61320.58059679206
+    }
+  ]
+}
