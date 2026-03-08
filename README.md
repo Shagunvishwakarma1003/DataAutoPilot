@@ -1,5 +1,7 @@
 # 🚀 DataAutoPilot — Automated Data Science Pipeline
 
+![DataAutoPilot Dashboard](dashboard.jpeg)
+
 An end-to-end *AutoML-style pipeline* that automatically performs:
 
 * Exploratory Data Analysis (EDA)  
