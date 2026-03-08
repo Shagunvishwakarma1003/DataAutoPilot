@@ -3,16 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.inspection import permutation_importance
 
-def save_permutation_importance(best_model, X_test, y_test, out_path="output/permutation_importance.png", top_n=15):
+
+def save_permutation_importance(
+    best_model, X_test, y_test, out_path="output/permutation_importance.png", top_n=15
+):
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
     r = permutation_importance(
-        best_model,
-        X_test,
-        y_test,
-        n_repeats=10,
-        random_state=42,
-        scoring="f1"
+        best_model, X_test, y_test, n_repeats=10, random_state=42, scoring="f1"
     )
 
     importances = r.importances_mean

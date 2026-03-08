@@ -63,12 +63,25 @@ def generate_html_report(
     notes = notes or {}
 
     # Defaults (if not provided)
-    eda_txt = artifacts.get("eda_report_txt", os.path.join(output_dir, "eda", "eda_report.txt"))
-    corr_png = artifacts.get("corr_heatmap_png", os.path.join(output_dir, "eda", "correlation_heatmap.png"))
-    fi_png = artifacts.get("feature_importance_png", os.path.join(output_dir, "feature_importance.png"))
-    pi_png = artifacts.get("permutation_importance_png", os.path.join(output_dir, "permutation_importance.png"))
-    shap_summary_png = artifacts.get("shap_summary_png", os.path.join(output_dir, "shap", "shap_summary.png"))
-    shap_waterfall_png = artifacts.get("shap_waterfall_png", os.path.join(output_dir, "shap", "shap_waterfall.png"))
+    eda_txt = artifacts.get(
+        "eda_report_txt", os.path.join(output_dir, "eda", "eda_report.txt")
+    )
+    corr_png = artifacts.get(
+        "corr_heatmap_png", os.path.join(output_dir, "eda", "correlation_heatmap.png")
+    )
+    fi_png = artifacts.get(
+        "feature_importance_png", os.path.join(output_dir, "feature_importance.png")
+    )
+    pi_png = artifacts.get(
+        "permutation_importance_png",
+        os.path.join(output_dir, "permutation_importance.png"),
+    )
+    shap_summary_png = artifacts.get(
+        "shap_summary_png", os.path.join(output_dir, "shap", "shap_summary.png")
+    )
+    shap_waterfall_png = artifacts.get(
+        "shap_waterfall_png", os.path.join(output_dir, "shap", "shap_waterfall.png")
+    )
 
     now = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     eda_text = _read_text(eda_txt)
@@ -121,7 +134,13 @@ def generate_html_report(
     # Notes html
     notes_html = "<p class='muted'>No notes</p>"
     if notes:
-        notes_html = "<ul>" + "".join([f"<li><b>{_safe(k)}</b>: {_safe(v)}</li>" for k, v in notes.items()]) + "</ul>"
+        notes_html = (
+            "<ul>"
+            + "".join(
+                [f"<li><b>{_safe(k)}</b>: {_safe(v)}</li>" for k, v in notes.items()]
+            )
+            + "</ul>"
+        )
 
     html = f"""
 <!doctype html>
@@ -199,15 +218,10 @@ def generate_html_report(
     pdf_path = os.path.join(output_dir, "report.pdf")
 
     config = pdfkit.configuration(
-    wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
+        wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
     )
     options = {"enable-local-file-access": None}
-    pdfkit.from_file(
-        report_path,
-        pdf_path,
-        configuration=config,
-        options=options
-    )
+    pdfkit.from_file(report_path, pdf_path, configuration=config, options=options)
     print("✅ PDF report saved:", pdf_path)
-    
+
     return report_path

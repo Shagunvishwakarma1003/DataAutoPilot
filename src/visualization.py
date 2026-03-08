@@ -5,44 +5,46 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 
-def plot_k_silhouette(scores, save_path= 'output/k_vs_silhouette.png'):
+def plot_k_silhouette(scores, save_path="output/k_vs_silhouette.png"):
     # scores: list of dicts like [{'k': 2, 'silhouette': 0.21}, ...]
 
     if not scores:
-        print('No silhouette scores found to plot.')
+        print("No silhouette scores found to plot.")
         return
-    
-    df = pd.DataFrame(scores).sort_values('k')
+
+    df = pd.DataFrame(scores).sort_values("k")
 
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
     plt.figure()
-    plt.plot(df['k'], df['silhouette'], marker='o')
-    plt.title('K vs Silhouette Score')
-    plt.xlabel('Number of Clusters (k)')
-    plt.ylabel('Silhouette Score')
+    plt.plot(df["k"], df["silhouette"], marker="o")
+    plt.title("K vs Silhouette Score")
+    plt.xlabel("Number of Clusters (k)")
+    plt.ylabel("Silhouette Score")
     plt.grid(True)
-    plt.savefig(save_path, dpi=200, bbox_inches='tight')
+    plt.savefig(save_path, dpi=200, bbox_inches="tight")
     plt.close()
 
-def plot_pca_clusters(embeddings, labels, save_path='output/pca_clusters.png'):
+
+def plot_pca_clusters(embeddings, labels, save_path="output/pca_clusters.png"):
     # embeddings: array-like of shape (n_samples, 2)
     # labels: array-like of shape (n_samples,)
 
     if embeddings is None or labels is None:
-        print(' PCA embeddings / labels missing, cannot plot.')
+        print(" PCA embeddings / labels missing, cannot plot.")
         return
-    
+
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
 
     plt.figure()
     plt.scatter(embeddings[:, 0], embeddings[:, 1], c=labels, s=20)
-    plt.title('PCA (2D) Cluster Visualization')
-    plt.xlabel('PC1')
-    plt.ylabel('PC2')
+    plt.title("PCA (2D) Cluster Visualization")
+    plt.xlabel("PC1")
+    plt.ylabel("PC2")
     plt.grid(True)
-    plt.savefig(save_path, dpi=200, bbox_inches='tight')
+    plt.savefig(save_path, dpi=200, bbox_inches="tight")
     plt.close()
+
 
 # -------------------------------
 
@@ -52,7 +54,9 @@ import numpy as np
 import pandas as pd
 
 
-def save_missing_values_plot(df: pd.DataFrame, out_path="output/eda/missing_values.png", top_n=30):
+def save_missing_values_plot(
+    df: pd.DataFrame, out_path="output/eda/missing_values.png", top_n=30
+):
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
     miss = df.isna().sum().sort_values(ascending=False)
@@ -71,7 +75,10 @@ def save_missing_values_plot(df: pd.DataFrame, out_path="output/eda/missing_valu
 
     return out_path
 
-def save_model_leaderboard(results, metric="RMSE", out_path="output/model_leaderboard.png"):
+
+def save_model_leaderboard(
+    results, metric="RMSE", out_path="output/model_leaderboard.png"
+):
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
@@ -81,7 +88,7 @@ def save_model_leaderboard(results, metric="RMSE", out_path="output/model_leader
     pairs = sorted(zip(scores, models))
     scores_sorted, models_sorted = zip(*pairs)
 
-    plt.figure(figsize=(8,5))
+    plt.figure(figsize=(8, 5))
     plt.barh(models_sorted, scores_sorted)
 
     plt.xlabel(metric)
@@ -94,7 +101,9 @@ def save_model_leaderboard(results, metric="RMSE", out_path="output/model_leader
     return out_path
 
 
-def save_correlation_heatmap(df: pd.DataFrame, out_path="output/eda/correlation_heatmap.png"):
+def save_correlation_heatmap(
+    df: pd.DataFrame, out_path="output/eda/correlation_heatmap.png"
+):
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 
     num_df = df.select_dtypes(include=[np.number])
@@ -117,7 +126,9 @@ def save_correlation_heatmap(df: pd.DataFrame, out_path="output/eda/correlation_
     return out_path
 
 
-def save_feature_importance(best_model, x: pd.DataFrame, out_path="output/feature_importance.png", top_n=15):
+def save_feature_importance(
+    best_model, x: pd.DataFrame, out_path="output/feature_importance.png", top_n=15
+):
 
     os.makedirs(os.path.dirname(out_path), exist_ok=True)
 

@@ -1,0 +1,4 @@
+Dataset contains 891 rows and 12 columns.
+Target variable detected: Survived
+Problem type: Classification
+Average value of target: 0.38

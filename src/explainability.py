@@ -4,7 +4,10 @@ import pandas as pd
 import shap
 import matplotlib.pyplot as plt
 
-def explain_with_shap(best_model, x: "pd.DataFrame", out_dir="output/shap", max_display=10):
+
+def explain_with_shap(
+    best_model, x: "pd.DataFrame", out_dir="output/shap", max_display=10
+):
     """
     Works with:
     - Tree models: RandomForest, DecisionTree, XGBoost (TreeExplainer)
@@ -19,6 +22,10 @@ def explain_with_shap(best_model, x: "pd.DataFrame", out_dir="output/shap", max_
     """
 
     os.makedirs(out_dir, exist_ok=True)
+
+    # large dataset
+    if len(x) > 5000:
+        x = x.sample(2000, random_state=42)
 
     pre = best_model.named_steps.get("preprocessor")
     model = best_model.named_steps.get("model")
@@ -46,14 +53,19 @@ def explain_with_shap(best_model, x: "pd.DataFrame", out_dir="output/shap", max_
     model_name = model.__class__.__name__.lower()
 
     # Decide explainer type
-    is_tree = hasattr(model, "feature_importances_") or ("xgb" in model_name) or ("randomforest" in model_name) or ("decisiontree" in model_name)
+    is_tree = (
+        hasattr(model, "feature_importances_")
+        or ("xgb" in model_name)
+        or ("randomforest" in model_name)
+        or ("decisiontree" in model_name)
+    )
     is_linear = (
-        hasattr(model, 'coef_') or
-        ('logistic' in model_name) or
-        ('linearsvc' in model_name) or
-        ('linear' in model_name) or
-        ('ridge' in model_name) or
-        ('lasso' in model_name)
+        hasattr(model, "coef_")
+        or ("logistic" in model_name)
+        or ("linearsvc" in model_name)
+        or ("linear" in model_name)
+        or ("ridge" in model_name)
+        or ("lasso" in model_name)
     )
     # Build explainer
     if is_tree:
@@ -65,14 +77,21 @@ def explain_with_shap(best_model, x: "pd.DataFrame", out_dir="output/shap", max_
         explainer = shap.LinearExplainer(model, bg)
         sv = explainer.shap_values(x_dense)
     else:
-        raise ValueError(f"Model not supported by SHAP in this function: {model._class.name_}")
+        raise ValueError(
+            f"Model not supported by SHAP in this function: {model._class.name_}"
+        )
 
     # Handle binary classification shapes:
     # sv can be list [class0, class1] OR array (n, f)
     if isinstance(sv, list):
         # prefer class 1 explanations if available
         sv_arr = sv[1] if len(sv) > 1 else sv[0]
-        base_val = explainer.expected_value[1] if isinstance(explainer.expected_value, (list, np.ndarray)) and len(explainer.expected_value) > 1 else explainer.expected_value
+        base_val = (
+            explainer.expected_value[1]
+            if isinstance(explainer.expected_value, (list, np.ndarray))
+            and len(explainer.expected_value) > 1
+            else explainer.expected_value
+        )
     else:
         sv_arr = sv
         base_val = explainer.expected_value
@@ -90,7 +109,13 @@ def explain_with_shap(best_model, x: "pd.DataFrame", out_dir="output/shap", max_
     # ---------- Summary plot ----------
     summary_png = os.path.join(out_dir, "shap_summary.png")
     plt.figure()
-    shap.summary_plot(sv_arr, x_dense, feature_names=list(feat_names), show=False, max_display=max_display)
+    shap.summary_plot(
+        sv_arr,
+        x_dense,
+        feature_names=list(feat_names),
+        show=False,
+        max_display=max_display,
+    )
     plt.tight_layout()
     plt.savefig(summary_png, dpi=200, bbox_inches="tight")
     plt.close()
@@ -106,8 +131,8 @@ def explain_with_shap(best_model, x: "pd.DataFrame", out_dir="output/shap", max_
         sv_use = sv_arr[:, :, 1]
     else:
         sv_use = sv_arr
-    
-    values_1 = sv_use[idx, :]   # ✅ feature-wise vector
+
+    values_1 = sv_use[idx, :]  # ✅ feature-wise vector
     data_1 = x_dense[idx]
 
     base_val = explainer.expected_value
@@ -131,8 +156,12 @@ def explain_with_shap(best_model, x: "pd.DataFrame", out_dir="output/shap", max_
     pairs = list(zip(feat_names, values_1))
     pairs_sorted = sorted(pairs, key=lambda z: abs(z[1]), reverse=True)[:max_display]
 
-    positive_reasons = [(str(n), float(v)) for n, v in pairs_sorted if v > 0][:max_display]
-    negative_reasons = [(str(n), float(v)) for n, v in pairs_sorted if v < 0][:max_display]
+    positive_reasons = [(str(n), float(v)) for n, v in pairs_sorted if v > 0][
+        :max_display
+    ]
+    negative_reasons = [(str(n), float(v)) for n, v in pairs_sorted if v < 0][
+        :max_display
+    ]
 
     return {
         "summary_png": summary_png,

@@ -20,36 +20,59 @@
 <body>
 
   <h1>DataAutoPilot Analysis Report</h1>
-  <p class="muted">Generated at: 2026-03-07 23:30:18</p>
+  <p class="muted">Generated at: 2026-03-08 07:20:36</p>
 
   <div class="card">
-    <span class="tag">REGRESSION</span>
-    <span class="tag">Target: EstimatedSalary</span>
-    <span class="tag">Shape: (10000, 14)</span>
+    <span class="tag">CLASSIFICATION</span>
+    <span class="tag">Target: Survived</span>
+    <span class="tag">Shape: (891, 12)</span>
     <p class="muted">Dataset: </p>
   </div>
 
   <div class="card">
     <h2>Best Model</h2>
-    <p><b>SVR</b></p>
+    <p><b>LogisticRegression</b></p>
     <pre>{
-  &quot;rmse&quot;: 57483.68838121234,
-  &quot;mae&quot;: 49782.38974894601,
-  &quot;r2&quot;: -0.000945445601033823
+  &quot;cv_f1&quot;: 0.8277911457535628,
+  &quot;f1&quot;: 0.7058823529411765,
+  &quot;accuracy&quot;: 0.8044692737430168,
+  &quot;tuning_top2&quot;: [
+    {
+      &quot;model&quot;: &quot;RandomForestClassifier&quot;,
+      &quot;tuned&quot;: true,
+      &quot;best_score&quot;: 0.7512937073929405,
+      &quot;best_params&quot;: {
+        &quot;model__n_estimators&quot;: 200,
+        &quot;model__min_samples_split&quot;: 10,
+        &quot;model__min_samples_leaf&quot;: 1,
+        &quot;model__max_features&quot;: &quot;log2&quot;,
+        &quot;model__max_depth&quot;: null
+      },
+      &quot;test_f1&quot;: 0.7142857142857143,
+      &quot;test_acc&quot;: 0.7988826815642458
+    },
+    {
+      &quot;model&quot;: &quot;SVM&quot;,
+      &quot;tuned&quot;: false,
+      &quot;reason&quot;: &quot;No tuning grid for svc&quot;,
+      &quot;test_f1&quot;: 0.7575757575757576,
+      &quot;test_acc&quot;: 0.8212290502793296
+    }
+  ]
 }</pre>
   </div>
 
   <div class="card">
     <h2>Leaderboard</h2>
     <table>
-      <thead><tr><th>Model</th><th>MAE</th><th>RMSE</th><th>R2</th><th>CV_RMSE</th></tr></thead>
-      <tbody><tr><td>LinearRegression</td><td></td><td></td><td></td><td></td></tr><tr><td>Ridge</td><td></td><td></td><td></td><td></td></tr><tr><td>Lasso</td><td></td><td></td><td></td><td></td></tr><tr><td>RandomForestRegressor</td><td></td><td></td><td></td><td></td></tr><tr><td>XGBRegressor</td><td></td><td></td><td></td><td></td></tr><tr><td>SVR</td><td></td><td></td><td></td><td></td></tr><tr><td>KNNRegressor</td><td></td><td></td><td></td><td></td></tr></tbody>
+      <thead><tr><th>Model</th><th>Acc</th><th>Prec</th><th>Recall</th><th>F1</th><th>CV_F1</th></tr></thead>
+      <tbody><tr><td>RandomForestClassifier</td><td>0.8044692737430168</td><td>0.84</td><td>0.6086956521739131</td><td></td><td>0.8277911457535628</td></tr><tr><td>SVM</td><td>0.8212290502793296</td><td>0.7936507936507936</td><td>0.7246376811594203</td><td></td><td>0.821260250778089</td></tr><tr><td>KNNClassifier</td><td>0.7988826815642458</td><td>0.7796610169491526</td><td>0.6666666666666666</td><td></td><td>0.8118162334151127</td></tr><tr><td>LogisticRegression</td><td>0.8268156424581006</td><td>0.8064516129032258</td><td>0.7246376811594203</td><td></td><td>0.805771741702849</td></tr><tr><td>XGBClassifier</td><td>0.7486033519553073</td><td>0.6818181818181818</td><td>0.6521739130434783</td><td></td><td>0.8037279155761278</td></tr><tr><td>DecisionTree</td><td>0.770949720670391</td><td>0.7121212121212122</td><td>0.6811594202898551</td><td></td><td>0.7964235014180463</td></tr></tbody>
     </table>
   </div>
 
   <div class="card">
     <h2>Notes</h2>
-    <p class='muted'>No notes</p>
+    <ul><li><b>note</b>: Leaderboard + top2 tuning + SHAP (best model only)</li></ul>
   </div>
 
   <h2>Artifacts</h2>

@@ -71,7 +71,11 @@ def tune_pipeline_top2(
         }
 
     else:
-        return pipe, {"model": model_name, "tuned": False, "reason": f"No tuning grid for {m}"}
+        return pipe, {
+            "model": model_name,
+            "tuned": False,
+            "reason": f"No tuning grid for {m}",
+        }
 
     # --- scoring ---
     if task_type == "classification":

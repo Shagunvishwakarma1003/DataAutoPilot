@@ -11,47 +11,54 @@ def save_artifact(obj, path: str):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     joblib.dump(obj, path)
 
+
 def load_artifact(path: str):
     return joblib.load(path)
+
 
 def save_model(model, path):
     save_artifact(model, path)
 
+
 def _norm(s: str) -> str:
-    return re.sub(r'[^a-z0-9]+','', str(s).lower())
+    return re.sub(r"[^a-z0-9]+", "", str(s).lower())
+
 
 def resolve_target_column(df: pd.DataFrame, target_name: str):
-    '''Case-insensitive + underscore/space ignore + fuzzy match'''
+    """Case-insensitive + underscore/space ignore + fuzzy match"""
     cols = list(df.columns)
     norm_map = {_norm(c): c for c in cols}
-    t =  _norm(target_name)
+    t = _norm(target_name)
 
     # Exact normalized
     if t in norm_map:
-        return norm_map[t], 'normalized_exact'
-    
+        return norm_map[t], "normalized_exact"
+
     # Fuzzy
     close = get_close_matches(t, list(norm_map.keys()), n=1, cutoff=0.82)
     if close:
-        return norm_map[close[0]], 'fuzzy_match'
-    
-    return None, 'not_found'
+        return norm_map[close[0]], "fuzzy_match"
+
+    return None, "not_found"
+
 
 def validate_dataframe(df: pd.DataFrame):
     if df is None or df.empty:
-        return False, 'CSV is empty or could not be read'
+        return False, "CSV is empty or could not be read"
     if df.shape[1] < 2:
-        return False, 'CSV must have at least 2 columns.'
+        return False, "CSV must have at least 2 columns."
     if df.shape[0] < 20:
-        return False, 'Too few rows (<20). Model training may be unreliable.'
-    return True, 'ok'
+        return False, "Too few rows (<20). Model training may be unreliable."
+    return True, "ok"
+
 
 def validate_target(df: pd.DataFrame, target_col: str):
     if target_col not in df.columns:
         return False, f'Target column "{target_col}" not found.'
     if df[target_col].dropna().empty:
         return False, f'Target column "{target_col}" has no values.'
-    return True, 'ok'
+    return True, "ok"
+
 
 def detect_target_column(df: pd.DataFrame):
     """
@@ -67,14 +74,27 @@ def detect_target_column(df: pd.DataFrame):
 
     # 1) Name-based priority
     priority_keywords = [
-    # Most common ML targets first
-    "survived", "churn", "default", "fraud", "target", "label", "outcome", "status",
-    # Regression type
-    "price", "salary", "charges", "sales", "profit",
-    # Keep generic words last
-    "class", "output","y"
-]
-    norm_cols = { _norm(c): c for c in cols }
+        # Most common ML targets first
+        "survived",
+        "churn",
+        "default",
+        "fraud",
+        "target",
+        "label",
+        "outcome",
+        "status",
+        # Regression type
+        "price",
+        "salary",
+        "charges",
+        "sales",
+        "profit",
+        # Keep generic words last
+        "class",
+        "output",
+        "y",
+    ]
+    norm_cols = {_norm(c): c for c in cols}
 
     for kw in priority_keywords:
         for nc, original in norm_cols.items():
@@ -124,24 +144,30 @@ def detect_target_column(df: pd.DataFrame):
 
         # classification-friendly
         if kind in ["binary"]:
-            score += 90; reason.append("binary_target_like")
+            score += 90
+            reason.append("binary_target_like")
         elif kind in ["multiclass"]:
-            score += 75; reason.append("multiclass_target_like")
+            score += 75
+            reason.append("multiclass_target_like")
         elif kind in ["discrete_numeric"] and uniq <= 20:
-            score += 60; reason.append("discrete_numeric_target_like")
+            score += 60
+            reason.append("discrete_numeric_target_like")
 
         # regression-friendly
         if kind == "continuous_numeric":
-            score += 70; reason.append("continuous_numeric_target_like")
+            score += 70
+            reason.append("continuous_numeric_target_like")
 
         # penalize text-like huge unique
         if kind == "text_like":
-            score -= 50; reason.append("text_like_penalty")
+            score -= 50
+            reason.append("text_like_penalty")
 
         # avoid obvious ID columns
         nc = _norm(c)
         if "id" in nc or "uuid" in nc:
-            score -= 60; reason.append("id_penalty")
+            score -= 60
+            reason.append("id_penalty")
 
         if score > best_score:
             best_score = score
