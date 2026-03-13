@@ -28,37 +28,32 @@ if uploaded_file is not None:
     st.success("Dataset uploaded successfully!")
 
     if st.button("Run DataAutoPilot"):
-
-        # first create folder:
+        # create folders
         os.makedirs("output", exist_ok=True)
         os.makedirs("output/eda", exist_ok=True)
 
+        # run pipeline
         subprocess.run([sys.executable, "src/main.py", "--data", "dataset.csv", "--cv", "2"])
 
         st.success("Pipeline executed successfully!")
-        
-        # Debug Code
-        st.write("Current directory files:")
-        st.write(os.listdir())
 
-        st.write("Output folder files:")
-        st.write(os.listdir("output"))
-
-        st.subheader("Data Insights")
+        # show insights
         if os.path.exists("output/insights.txt"):
             with open("output/insights.txt") as f:
+                st.subheader("Data Insights")
                 for line in f:
                     st.write("-", line.strip())
 
-        report_path = os.path.join(os.getcwd(), "output/report.pdf")
+        # report download
+        report_path = "output/report.pdf"
 
         if os.path.exists(report_path):
             with open(report_path, "rb") as file:
                 st.download_button(
-                    label="⬇ Download Report",
+                    label="📥 Download Report",
                     data=file,
                     file_name="DataAutoPilot_Report.pdf",
-                    mime="application/pdf",
+                    mime="application/pdf"
                 )
         else:
-            st.warning("Report not found. Please check pipeline output.")
+            st.warning("Report not generated.")
