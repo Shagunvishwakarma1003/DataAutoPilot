@@ -16,7 +16,7 @@ st.markdown("""
 💼 [LinkedIn](https://www.linkedin.com/in/shagun1003)
 """)
 
-uploaded_file = st.file_uploader("Upload CSV dataset")
+uploaded_file = st.file_uploader("Upload CSV dataset", type=["csv"])
 
 if uploaded_file is not None:
 
@@ -26,6 +26,11 @@ if uploaded_file is not None:
     st.success("Dataset uploaded successfully!")
 
     if st.button("Run DataAutoPilot"):
+
+        import shutil
+
+        if os.path.exists("output"):
+            shutil.rmtree("output")
 
         subprocess.run("python src/main.py --data dataset.csv --cv 2", shell=True)
 

@@ -1,44 +1,19 @@
 {
-  "generated_at": "2026-03-08 07:20:36",
-  "task_type": "classification",
+  "generated_at": "2026-03-10 17:21:45",
+  "task_type": "regression",
   "dataset_path": "",
-  "target": "Survived",
+  "target": "charges",
   "shape": [
-    891,
-    12
+    2772,
+    7
   ],
-  "best_model": "LogisticRegression",
+  "best_model": "XGBRegressor",
   "best_metric": {
-    "cv_f1": 0.8277911457535628,
-    "f1": 0.7058823529411765,
-    "accuracy": 0.8044692737430168,
-    "tuning_top2": [
-      {
-        "model": "RandomForestClassifier",
-        "tuned": true,
-        "best_score": 0.7512937073929405,
-        "best_params": {
-          "model__n_estimators": 200,
-          "model__min_samples_split": 10,
-          "model__min_samples_leaf": 1,
-          "model__max_features": "log2",
-          "model__max_depth": null
-        },
-        "test_f1": 0.7142857142857143,
-        "test_acc": 0.7988826815642458
-      },
-      {
-        "model": "SVM",
-        "tuned": false,
-        "reason": "No tuning grid for svc",
-        "test_f1": 0.7575757575757576,
-        "test_acc": 0.8212290502793296
-      }
-    ]
+    "rmse": 2567.347912752565,
+    "mae": 1133.1081477869861,
+    "r2": 0.9570547680546883
   },
-  "notes": {
-    "note": "Leaderboard + top2 tuning + SHAP (best model only)"
-  },
+  "notes": {},
   "artifacts": {
     "eda_report_txt": "output/eda/eda_report.txt",
     "corr_heatmap_png": "output/eda/correlation_heatmap.png",
@@ -49,112 +24,53 @@
   },
   "all_results": [
     {
-      "model": "RandomForestClassifier",
-      "accuracy": 0.8044692737430168,
-      "precision": 0.84,
-      "recall": 0.6086956521739131,
-      "f1 Score": 0.7058823529411765,
-      "cv_f1": 0.8277911457535628,
-      "confusion matrix": [
-        [
-          102,
-          8
-        ],
-        [
-          27,
-          42
-        ]
-      ]
+      "model": "LinearRegression",
+      "MAE": 4160.247974762991,
+      "RMSE": 6319.27167860755,
+      "R2": 0.73981661775643,
+      "CV_RMSE": 6073.823792700887
     },
     {
-      "model": "SVM",
-      "accuracy": 0.8212290502793296,
-      "precision": 0.7936507936507936,
-      "recall": 0.7246376811594203,
-      "f1 Score": 0.7575757575757576,
-      "cv_f1": 0.821260250778089,
-      "confusion matrix": [
-        [
-          97,
-          13
-        ],
-        [
-          19,
-          50
-        ]
-      ]
+      "model": "Ridge",
+      "MAE": 4160.467103429092,
+      "RMSE": 6319.314424635062,
+      "R2": 0.7398130977800157,
+      "CV_RMSE": 6073.81873473535
     },
     {
-      "model": "KNNClassifier",
-      "accuracy": 0.7988826815642458,
-      "precision": 0.7796610169491526,
-      "recall": 0.6666666666666666,
-      "f1 Score": 0.71875,
-      "cv_f1": 0.8118162334151127,
-      "confusion matrix": [
-        [
-          97,
-          13
-        ],
-        [
-          23,
-          46
-        ]
-      ]
+      "model": "Lasso",
+      "MAE": 4160.247996466982,
+      "RMSE": 6319.271814296113,
+      "R2": 0.739816606583019,
+      "CV_RMSE": 6073.823693388722
     },
     {
-      "model": "LogisticRegression",
-      "accuracy": 0.8268156424581006,
-      "precision": 0.8064516129032258,
-      "recall": 0.7246376811594203,
-      "f1 Score": 0.7633587786259542,
-      "cv_f1": 0.805771741702849,
-      "confusion matrix": [
-        [
-          98,
-          12
-        ],
-        [
-          19,
-          50
-        ]
-      ]
+      "model": "RandomForestRegressor",
+      "MAE": 1286.5880466151948,
+      "RMSE": 2708.954765083349,
+      "R2": 0.9521866682728002,
+      "CV_RMSE": 2577.950065410565
     },
     {
-      "model": "XGBClassifier",
-      "accuracy": 0.7486033519553073,
-      "precision": 0.6818181818181818,
-      "recall": 0.6521739130434783,
-      "f1 Score": 0.6666666666666666,
-      "cv_f1": 0.8037279155761278,
-      "confusion matrix": [
-        [
-          89,
-          21
-        ],
-        [
-          24,
-          45
-        ]
-      ]
+      "model": "XGBRegressor",
+      "MAE": 1133.1081477869861,
+      "RMSE": 2567.347912752565,
+      "R2": 0.9570547680546883,
+      "CV_RMSE": 2301.724705581284
     },
     {
-      "model": "DecisionTree",
-      "accuracy": 0.770949720670391,
-      "precision": 0.7121212121212122,
-      "recall": 0.6811594202898551,
-      "f1 Score": 0.6962962962962963,
-      "cv_f1": 0.7964235014180463,
-      "confusion matrix": [
-        [
-          91,
-          19
-        ],
-        [
-          22,
-          47
-        ]
-      ]
+      "model": "SVR",
+      "MAE": 8309.58403215314,
+      "RMSE": 12806.083860774937,
+      "R2": -0.06850899855324477,
+      "CV_RMSE": 12733.49795770956
+    },
+    {
+      "model": "KNNRegressor",
+      "MAE": 3024.2795893837842,
+      "RMSE": 5613.0989013605185,
+      "R2": 0.794717990712621,
+      "CV_RMSE": 5035.884447224617
     }
   ]
 }
