@@ -1,4 +1,4 @@
-Dataset contains 2772 rows and 7 columns.
-Target variable detected: charges
-Problem type: Regression
-Average value of target: 13261.37
+Dataset contains 891 rows and 12 columns.
+Target variable detected: Survived
+Problem type: Classification
+Average value of target: 0.38
