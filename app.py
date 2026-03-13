@@ -2,47 +2,69 @@ import streamlit as st
 import subprocess
 import os
 import sys
-import shutil
 
 st.title("🚀 DataAutoPilot")
 st.write("Automated Data Science Pipeline")
 
-
 st.caption("⚡ Built with Python, Scikit-learn, SHAP & Streamlit")
-
-
 st.caption("👨‍💻 Created by Shagun Vishwakarma")
 
 st.markdown("""
-🔗 [GitHub](https://github.com/Shagunvishwakarma1003) | 
+🔗 [GitHub](https://github.com/Shagunvishwakarma1003)  
 💼 [LinkedIn](https://www.linkedin.com/in/shagun1003)
 """)
 
+# Upload CSV
 uploaded_file = st.file_uploader("Upload CSV dataset", type=["csv"])
 
 if uploaded_file is not None:
 
+    # Save uploaded dataset
     with open("dataset.csv", "wb") as f:
         f.write(uploaded_file.getbuffer())
 
     st.success("Dataset uploaded successfully!")
 
     if st.button("Run DataAutoPilot"):
+
         # create folders
         os.makedirs("output", exist_ok=True)
         os.makedirs("output/eda", exist_ok=True)
 
         # run pipeline
-        subprocess.run([sys.executable, "src/main.py", "--data", "dataset.csv", "--cv", "2"])
+        result = subprocess.run(
+            [sys.executable, "src/main.py", "--data", "dataset.csv", "--cv", "2"],
+            capture_output=True,
+            text=True
+        )
 
         st.success("Pipeline executed successfully!")
 
+        # show pipeline output
+        st.subheader("Pipeline Logs")
+        st.text(result.stdout)
+
+        if result.stderr:
+            st.subheader("Errors")
+            st.text(result.stderr)
+
         # show insights
         if os.path.exists("output/insights.txt"):
+            st.subheader("Data Insights")
+
             with open("output/insights.txt") as f:
-                st.subheader("Data Insights")
                 for line in f:
                     st.write("-", line.strip())
+
+        # show output files
+        st.subheader("Debug Info")
+
+        st.write("Current directory files:")
+        st.write(os.listdir())
+
+        if os.path.exists("output"):
+            st.write("Output folder files:")
+            st.write(os.listdir("output"))
 
         # report download
         report_path = "output/report.pdf"
@@ -56,4 +78,4 @@ if uploaded_file is not None:
                     mime="application/pdf"
                 )
         else:
-            st.warning("Report not generated.")
+            st.warning("Report not generated yet.")
