@@ -27,12 +27,16 @@ if uploaded_file is not None:
 
     if st.button("Run DataAutoPilot"):
 
+        import sys
         import shutil
 
         if os.path.exists("output"):
             shutil.rmtree("output")
 
-        subprocess.run("python src/main.py --data dataset.csv --cv 2", shell=True)
+        subprocess.run(
+            [sys.executable, "src/main.py", "--data",
+             "dataset.csv", "--cv", "2"]
+        )
 
         st.success("Pipeline executed successfully!")
 
