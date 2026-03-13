@@ -5,6 +5,12 @@ import sys
 import pandas as pd
 
 # -----------------------------
+# CREATE OUTPUT FOLDERS (FIX)
+# -----------------------------
+os.makedirs("output", exist_ok=True)
+os.makedirs("output/eda", exist_ok=True)
+
+# -----------------------------
 # PAGE CONFIG
 # -----------------------------
 st.set_page_config(page_title="DataAutoPilot", layout="wide")
@@ -26,13 +32,13 @@ st.markdown("""
 st.divider()
 
 # -----------------------------
-# FILE UPLOAD
+# DATASET UPLOAD
 # -----------------------------
 uploaded_file = st.file_uploader("Upload CSV Dataset", type=["csv"])
 
 if uploaded_file is not None:
 
-    # Save dataset
+    # Save uploaded dataset
     with open("dataset.csv", "wb") as f:
         f.write(uploaded_file.getbuffer())
 
@@ -58,9 +64,6 @@ if uploaded_file is not None:
     # RUN PIPELINE BUTTON
     # -----------------------------
     if st.button("Run DataAutoPilot"):
-
-        os.makedirs("output", exist_ok=True)
-        os.makedirs("output/eda", exist_ok=True)
 
         with st.spinner("Running DataAutoPilot Pipeline... ⏳"):
 
@@ -132,7 +135,7 @@ if uploaded_file is not None:
         st.divider()
 
         # -----------------------------
-        # DEBUG SECTION
+        # DEBUG INFO
         # -----------------------------
         with st.expander("Debug Info"):
 
