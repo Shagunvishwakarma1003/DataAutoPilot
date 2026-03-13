@@ -46,7 +46,7 @@ if uploaded_file is not None:
                 for line in f:
                     st.write("-", line.strip())
 
-        report_path = "output/report.html"
+        report_path = os.path.join(os.getcwd(), "output/report.pdf")
 
         if os.path.exists(report_path):
             with open(report_path, "rb") as file:
