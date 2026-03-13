@@ -2,6 +2,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 import pandas as pd
+import os
 import argparse
 from drift_detector import detect_drift
 from detector import (
@@ -40,6 +41,10 @@ from leaderboard import create_leaderboard
 from predictor import predict_to_csv
 from insights_generator import generate_insights
 from dashboard import create_dashboard
+
+# create folder automatically
+os.makedirs("output, exist_ok=True")
+os.makedirs("output/eda", exist_ok=True)
 
 
 def main():

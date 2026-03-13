@@ -34,8 +34,7 @@ if uploaded_file is not None:
             shutil.rmtree("output")
 
         subprocess.run(
-            [sys.executable, "src/main.py", "--data",
-             "dataset.csv", "--cv", "2"]
+            [sys.executable, "src/main.py", "--data", "dataset.csv", "--cv", "2"]
         )
 
         st.success("Pipeline executed successfully!")
@@ -54,7 +53,7 @@ if uploaded_file is not None:
                     label="⬇ Download Report",
                     data=file,
                     file_name="DataAutoPilot_Report.pdf",
-                    mime="application/pdf"
+                    mime="application/pdf",
                 )
         else:
             st.warning("Report not found. Please check pipeline output.")
