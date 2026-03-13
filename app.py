@@ -1,6 +1,8 @@
 import streamlit as st
 import subprocess
 import os
+import sys
+import shutil
 
 st.title("🚀 DataAutoPilot")
 st.write("Automated Data Science Pipeline")
@@ -31,15 +33,7 @@ if uploaded_file is not None:
         os.makedirs("output", exist_ok=True)
         os.makedirs("output/eda", exist_ok=True)
 
-        import sys
-        import shutil
-
-        if os.path.exists("output"):
-            shutil.rmtree("output")
-
-        subprocess.run(
-            [sys.executable, "src/main.py", "--data", "dataset.csv", "--cv", "2"]
-        )
+        subprocess.run([sys.executable, "src/main.py", "--data", "dataset.csv", "--cv", "2"])
 
         st.success("Pipeline executed successfully!")
         
