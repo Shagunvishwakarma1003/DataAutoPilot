@@ -46,15 +46,15 @@ if uploaded_file is not None:
                 for line in f:
                     st.write("-", line.strip())
 
-        report_path = "output/report.pdf"
+        report_path = "output/eda/eda_report.html"
 
         if os.path.exists(report_path):
             with open(report_path, "rb") as file:
                 st.download_button(
-                    label="⬇ Download Report",
+                    label="⬇ Download EDA Report",
                     data=file,
-                    file_name="DataAutoPilot_Report.pdf",
-                    mime="application/pdf",
+                    file_name="DataAutoPilot_EDA_Report.html",
+                    mime="text/html"
                 )
         else:
             st.warning("Report not found. Please check pipeline output.")
