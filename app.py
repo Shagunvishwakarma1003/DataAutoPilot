@@ -38,6 +38,13 @@ if uploaded_file is not None:
         )
 
         st.success("Pipeline executed successfully!")
+        
+        # Debug Code
+        st.write("Current directory files:")
+        st.write(os.listdir())
+
+        st.write("Output folder files:")
+        st.write(os.listdir("output"))
 
         st.subheader("Data Insights")
         if os.path.exists("output/insights.txt"):
