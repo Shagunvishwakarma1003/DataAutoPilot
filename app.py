@@ -27,6 +27,10 @@ if uploaded_file is not None:
 
     if st.button("Run DataAutoPilot"):
 
+        # first create folder:
+        os.makedirs("output", exist_ok=True)
+        os.makedirs("output/eda", exist_ok=True)
+
         import sys
         import shutil
 

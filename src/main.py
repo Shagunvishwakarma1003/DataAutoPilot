@@ -43,7 +43,7 @@ from insights_generator import generate_insights
 from dashboard import create_dashboard
 
 # create folder automatically
-os.makedirs("output, exist_ok=True")
+os.makedirs("output", exist_ok=True)
 os.makedirs("output/eda", exist_ok=True)
 
 
