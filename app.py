@@ -3,6 +3,13 @@ import subprocess
 import os
 import sys
 import pandas as pd
+
+st.title("🚀DataAutoPilot")
+st.write("Automated Data Science Pipline")
+
+st.caption("⚡Build with Python, Scikit-learn, SHAP & Streamlit")
+
+st.caption("Created by Shagun Vishwakarma")
 os.makedirs("output", exist_ok=True)
 os.makedirs("output/eda", exist_ok=True)
 uploaded_file = st.file_uploader("Upload CSV dataset", type=["csv"])
@@ -36,7 +43,7 @@ if uploaded_file is not None:
                 [sys.executable, script, "--data", "dataset.csv", "--cv", "2"],
                 capture_output=True,
                 text=True,
-                timeout=600
+                check=True
             )   
 
         st.success("Pipeline executed successfully!")
