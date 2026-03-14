@@ -4,7 +4,7 @@ import os
 import sys
 import pandas as pd
 
-# create folders (important for Streamlit cloud)
+# create output folders (important for Streamlit cloud)
 os.makedirs("output", exist_ok=True)
 os.makedirs("output/eda", exist_ok=True)
 
@@ -19,7 +19,7 @@ st.markdown("""
 💼 [LinkedIn](https://www.linkedin.com/in/shagun1003)
 """)
 
-# Upload CSV
+# upload dataset
 uploaded_file = st.file_uploader("Upload CSV dataset", type=["csv"])
 
 if uploaded_file is not None:
@@ -30,27 +30,29 @@ if uploaded_file is not None:
 
     st.success("Dataset uploaded successfully!")
 
+    # preview dataset
     df = pd.read_csv(uploaded_file)
 
     st.subheader("Dataset Preview")
     st.dataframe(df.head())
 
+    # run pipeline
     if st.button("Run DataAutoPilot"):
 
-        with st.spinner("Running DataAutoPilot Pipeline..."):
+        script = os.path.join("src", "main.py")
 
-            # correct path for main.py
-            script = os.path.join("src", "main.py")
+        with st.spinner("Running DataAutoPilot Pipeline..."):
 
             result = subprocess.run(
                 [sys.executable, script, "--data", "dataset.csv", "--cv", "2"],
                 capture_output=True,
-                text=True
+                text=True,
+                timeout=600
             )
 
         st.success("Pipeline executed successfully!")
 
-        # show pipeline logs
+        # show logs
         st.subheader("Pipeline Logs")
         st.code(result.stdout)
 
@@ -68,6 +70,8 @@ if uploaded_file is not None:
                     st.write("•", line.strip())
 
         # show charts
+        st.subheader("Visualizations")
+
         if os.path.exists("output/missing_values.png"):
             st.image("output/missing_values.png", caption="Missing Values")
 
@@ -77,18 +81,18 @@ if uploaded_file is not None:
         if os.path.exists("output/model_leaderboard.png"):
             st.image("output/model_leaderboard.png", caption="Model Leaderboard")
 
-        # report download
+        # download report
         report_path = "output/report.pdf"
 
         if os.path.exists(report_path):
 
             with open(report_path, "rb") as file:
                 st.download_button(
-                    label="📥 Download Report",
+                    label="📥 Download Full Report",
                     data=file,
                     file_name="DataAutoPilot_Report.pdf",
                     mime="application/pdf"
                 )
 
         else:
-            st.warning("Report not generated.")
+            st.warning("Report not generated yet.")
