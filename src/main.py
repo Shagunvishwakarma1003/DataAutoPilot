@@ -47,8 +47,9 @@ os.makedirs("output", exist_ok=True)
 os.makedirs("output/eda", exist_ok=True)
 
 
-def main():
-    parser = argparse.ArgumentParser()
+def main(data_path, cv=2):
+
+    parser = argparse.ArgumentParser
     parser.add_argument("--data", required=True, help="path to CSV file")
     parser.add_argument("--target", required=False, help="Target column (optional)")
     parser.add_argument(
@@ -70,12 +71,12 @@ def main():
         "--cv", type=int, default=0, help="Number of CV folds (e.g., 5). 0 = no CV"
     )
 
-    args = parser.parse_args()
+    args = parser.parse_args
     print("\nDataAutoPilot Started...")
     print("Running automated data science pipeline...")
 
     # Load data
-    df = pd.read_csv(args.data)
+    df = pd.read_csv(data_path)
     if len(df) > 10000:
         df = df.sample(10000, random_state=42)
     ok, msg = validate_dataframe(df)
@@ -342,4 +343,13 @@ def main():
 
 
 def run_pipeline(data_path, cv=2):
-    main()
+    main(data_path, cv)
+
+    if __name__ == "__main__":
+        import argparse
+        parser = argparse.ArgumentsParser()
+        parser.add_arguments("--data", required=True)
+        parser.add_arguments("--cv", type=int, default=2)
+
+        args = parser.parse_args()
+        main(args.data, args.cv)
