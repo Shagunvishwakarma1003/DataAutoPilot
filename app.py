@@ -1,7 +1,7 @@
 import streamlit as st
 import os
 import pandas as pd
-from src.main import run_pipeline
+from main import run_pipeline
 
 st.title("🚀DataAutoPilot")
 st.write("Automated Data Science Pipeline")

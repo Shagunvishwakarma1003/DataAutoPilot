@@ -4,13 +4,13 @@ warnings.filterwarnings("ignore")
 import pandas as pd
 import os
 import argparse
-from src.drift_detector import detect_drift
-from src.detector import (
+from drift_detector import detect_drift
+from detector import (
     detect_supervised_type,
     detect_unsupervised_type,
     suggest_deep_learning,
 )
-from src.unsupervised import (
+from unsupervised import (
     run_clustering,
     run_pca,
     generate_cluster_report,
@@ -19,15 +19,15 @@ from src.unsupervised import (
     auto_name_cluster,
     generate_business_recommendations,
 )
-from src.association import run_association_rules
-from src.supervised import train_regression, train_classification
-from src.visualization import (
+from association import run_association_rules
+from supervised import train_regression, train_classification
+from visualization import (
     plot_k_silhouette,
     plot_pca_clusters,
     save_missing_values_plot,
     save_correlation_heatmap,
 )
-from src.utils import (
+from utils import (
     validate_dataframe,
     validate_target,
     resolve_target_column,
@@ -36,11 +36,11 @@ from src.utils import (
     load_artifact,
     detect_target_column,
 )
-from src.eda import make_eda_report
-from src.leaderboard import create_leaderboard
-from src.predictor import predict_to_csv
-from src.insights_generator import generate_insights
-from src.dashboard import create_dashboard
+from eda import make_eda_report
+from leaderboard import create_leaderboard
+from predictor import predict_to_csv
+from insights_generator import generate_insights
+from dashboard import create_dashboard
 
 # create folder automatically
 os.makedirs("output", exist_ok=True)
