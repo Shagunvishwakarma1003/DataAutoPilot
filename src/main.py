@@ -342,4 +342,4 @@ def main():
 
 
 def run_pipeline(data_path, cv=2):
-    main(data_path, cv)
+    main()
