@@ -3,7 +3,6 @@ import warnings
 warnings.filterwarnings("ignore")
 import pandas as pd
 import os
-import argparse
 from src.drift_detector import detect_drift
 from src.detector import (
     detect_supervised_type,
@@ -322,12 +321,3 @@ def main(data_path, cv=2, target=None):
 
 def run_pipeline(data_path, cv=2):
     main(data_path, cv)
-
-    if __name__ == "__main__":
-        import argparse
-        parser = argparse.ArgumentsParser()
-        parser.add_arguments("--data", required=True)
-        parser.add_arguments("--cv", type=int, default=2)
-
-        args = parser.parse_args()
-        main(args.data, args.cv)
