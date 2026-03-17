@@ -22,8 +22,8 @@ def should_use_class_weight(y, threshold=0.20):
     return (minority_ratio < threshold), float(minority_ratio)
 
 
-from tuner import tune_pipeline_top2
-from report_generator import generate_html_report
+from src.tuner import tune_pipeline_top2
+from src.report_generator import generate_html_report
 from xgboost import XGBRegressor, XGBClassifier
 from sklearn.model_selection import (
     train_test_split,
@@ -41,9 +41,9 @@ from sklearn.svm import SVR, SVC
 from sklearn.neighbors import KNeighborsRegressor, KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
-from visualization import save_feature_importance, save_model_leaderboard
-from explainability import explain_with_shap
-from importance import save_permutation_importance
+from src.visualization import save_feature_importance, save_model_leaderboard
+from src.explainability import explain_with_shap
+from src.importance import save_permutation_importance
 
 
 def build_preprocessor(X: pd.DataFrame):
@@ -389,7 +389,7 @@ def train_classification(df: pd.DataFrame, target: str, random_state=42, cv=None
         print(f"{i:02d}. {r.get('model',''): <20} | CV_F1={cvf} | F1={f1} | Acc={acc}")
 
     # ✅ Tune TOP-2 models (optional but AutoML vibe)
-    from tuner import tune_pipeline_top2
+    from src.tuner import tune_pipeline_top2
 
     top2 = (
         [results_sorted[0]["model"]]
@@ -495,7 +495,7 @@ def train_classification(df: pd.DataFrame, target: str, random_state=42, cv=None
         print("SHAP not available:", str(e))
 
     # PDF/HTML Report
-    from report_generator import generate_html_report
+    from src.report_generator import generate_html_report
 
     best_model_name = best_model.named_steps["model"].__class__.__name__
 
