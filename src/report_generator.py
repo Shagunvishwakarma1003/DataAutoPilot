@@ -217,9 +217,14 @@ def generate_html_report(
     # ✅ Convert HTML → PDF
     pdf_path = os.path.join(output_dir, "report.pdf")
 
-    config = pdfkit.configuration(
-        wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe"
-    )
+    # Detect os automatically
+    if os.name == "nt": # windows
+        config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+    else: # Linux / Cloud
+        config = pdfkit.configuration(wkhtmltopdf="/usr/bin/wkhtmltopdf")
+
+    options = {"enable-local-file-access": None}
+
     options = {"enable-local-file-access": None}
     pdfkit.from_file(report_path, pdf_path, configuration=config, options=options)
     print("✅ PDF report saved:", pdf_path)
