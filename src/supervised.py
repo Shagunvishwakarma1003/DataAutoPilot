@@ -147,7 +147,7 @@ def train_regression(df: pd.DataFrame, target: str, random_state=42, cv=None):
     r2 = r2_score(y_test, preds)
 
     # Report PDF/HTML
-    from report_generator import generate_html_report
+    from src.report_generator import generate_html_report
 
     best_model_name = best_model.named_steps["model"].__class__.__name__
     best_metric = {"rmse": float(rmse), "mae": float(mae), "r2": float(r2)}
