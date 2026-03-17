@@ -43,7 +43,6 @@ if uploaded_file is not None:
                 [sys.executable, script, "--data", "dataset.csv", "--cv", "2"],
                 capture_output=True,
                 text=True,
-                check=True
             )   
 
         st.success("Pipeline executed successfully!")
