@@ -341,5 +341,5 @@ def main():
             print(" - output/pca_clusters.png")
 
 
-if __name__ == "__main__":
-    main()
+def run_pipeline(data_path, cv=2):
+    main(data_path, cv)

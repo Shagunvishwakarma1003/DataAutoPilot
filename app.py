@@ -1,11 +1,10 @@
 import streamlit as st
-import subprocess
 import os
-import sys
 import pandas as pd
+from src.main import run_pipeline
 
 st.title("🚀DataAutoPilot")
-st.write("Automated Data Science Pipline")
+st.write("Automated Data Science Pipeline")
 
 st.caption("⚡Build with Python, Scikit-learn, SHAP & Streamlit")
 
@@ -35,24 +34,10 @@ if uploaded_file is not None:
 
     if st.session_state.run_pipeline:
 
-        script = os.path.join("src", "main.py")
-
         with st.spinner("Running DataAutoPilot Pipeline..."):
-            
-            result = subprocess.run(
-                [sys.executable, script, "--data", "dataset.csv", "--cv", "2"],
-                capture_output=True,
-                text=True,
-            )   
+            run_pipeline("dataset.csv", cv=2)
 
         st.success("Pipeline executed successfully!")
-
-        st.subheader("Pipeline Logs")
-        st.code(result.stdout)
-
-        if result.stderr:
-            st.subheader("Errors")
-            st.code(result.stderr)
         
         # Show insights:
         if os.path.exists("output/insights.txt"):
