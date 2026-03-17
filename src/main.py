@@ -47,33 +47,11 @@ os.makedirs("output", exist_ok=True)
 os.makedirs("output/eda", exist_ok=True)
 
 
-def main(data_path, cv=2):
-
-    parser = argparse.ArgumentParser
-    parser.add_argument("--data", required=True, help="path to CSV file")
-    parser.add_argument("--target", required=False, help="Target column (optional)")
-    parser.add_argument(
-        "--use_deep", action="store_true", help="Force deep learning mode (future)"
-    )
-    parser.add_argument(
-        "--predict", type=str, default=None, help="CSV path for prediction"
-    )
-    parser.add_argument(
-        "--load-model",
-        type=str,
-        default=None,
-        help="Load saved .pkl model (used with --predict only)",
-    )
-    parser.add_argument(
-        "--predict-on-train", action="store_true", help="Predict on training dataset"
-    )
-    parser.add_argument(
-        "--cv", type=int, default=0, help="Number of CV folds (e.g., 5). 0 = no CV"
-    )
-
-    args = parser.parse_args
-    print("\nDataAutoPilot Started...")
-    print("Running automated data science pipeline...")
+def main(data_path, cv=2, target=None):
+    predict = None
+    load_model = None
+    use_deep = False
+    predict_on_train = False
 
     # Load data
     df = pd.read_csv(data_path)
@@ -88,49 +66,49 @@ def main(data_path, cv=2):
     print("Shape:", df.shape)
 
     # Auto Target Detection;
-    if args.target is None:
+    if target is None:
         auto_target, why = detect_target_column(df)
         if auto_target is None:
             print("❎ Could not auto-detect target column.")
             print("👉 Please pass --target <column_name>")
             print("✅ Available columns:", list(df.columns))
             raise SystemExit(1)
-        args.target = auto_target
-        print(f' Auto-detected target:" {args.target}" ({why})')
+        target = auto_target
+        print(f' Auto-detected target:" {target}" ({why})')
 
     # If user provided target, solve it safely;
 
-    if args.target:
-        resolved, reason = resolve_target_column(df, args.target)
+    if target:
+        resolved, reason = resolve_target_column(df, target)
 
         if resolved is None:
-            print(f' ❎ Target "{args.target}" not found')
+            print(f' ❎ Target "{target}" not found')
             print("✅Available columns:", list(df.columns))
             raise SystemExit(1)
 
-        if resolved != args.target:
+        if resolved != target:
             print(f'ℹ Using target "{resolved}" ({reason})')
 
         # Replace with actual column name;
-        args.target = resolved
+        target = resolved
 
-        ok, msg = validate_target(df, args.target)
+        ok, msg = validate_target(df, target)
         if not ok:
             print(f"❎ {msg}")
             raise SystemExit(1)
 
         # AUTO PROBLEM DETECTION
-        y = df[args.target]
+        y = df[target]
         task = detect_supervised_type(y)
         print(f"\nDetected Problem Type: {task.upper()} ")
 
         # AUTO EDA + VISUALIZATION:
         # ✅ AUTO EDA (always)
-        report_path = make_eda_report(df, target=args.target, out_dir="output/eda")
+        report_path = make_eda_report(df, target=target, out_dir="output/eda")
         print(f"✅ EDA report saved: {report_path}")
 
         # DATASET INSIGHTS
-        insights = generate_insights(df, args.target)
+        insights = generate_insights(df, target)
 
         print("\n DATASET INSIGHTS")
         for i in insights:
@@ -141,7 +119,7 @@ def main(data_path, cv=2):
                 f.write(i + "\n")
 
         # AUTO DASHBOARD
-        create_dashboard(df, args.target)
+        create_dashboard(df, target)
         print("Dashboard charts saved in output")
 
         # ✅ AUTO VISUALS (EDA visuals)
@@ -154,11 +132,11 @@ def main(data_path, cv=2):
             print(f"✅ Correlation heatmap saved: {ch}")
 
         # Case-1: Only predict (no training);
-        if args.load_model and args.predict:
-            artifact = load_artifact(args.load_model)
+        if load_model and predict:
+            artifact = load_artifact(load_model)
             model = artifact["model"] if isinstance(artifact, dict) else artifact
 
-            pred_df = pd.read_csv(args.predict)
+            pred_df = pd.read_csv(predict)
             predict_to_csv(
                 model, pred_df, target=None, save_path="output/predictions.csv"
             )
@@ -169,19 +147,19 @@ def main(data_path, cv=2):
     dl_info = suggest_deep_learning(df)
     print("\nDeep Learning Suggestions:", dl_info)
 
-    if args.use_deep:
+    if use_deep:
         print("\nDeep Learning mode selected (phase-2 implementation required).")
 
     # If target provided -> Supervised
-    if args.target:
-        task = detect_supervised_type(df[args.target])
+    if target:
+        task = detect_supervised_type(df[target])
         if task is None:
             print("task None,check detector.py ")
             return
         print(f"\nDetected: Supervised -> {task.upper()}")
 
         if task == "regression":
-            best_model, results = train_regression(df, args.target, cv=5)
+            best_model, results = train_regression(df, target, cv=5)
 
             print("\n Model Comparison (Regression):")
             for r in results:
@@ -200,12 +178,12 @@ def main(data_path, cv=2):
             print("Reason: Highest performance on validation data")
 
             # save model with metadata;
-            artifact = {"model": best_model, "target": args.target, "task": task}
+            artifact = {"model": best_model, "target": target, "task": task}
             save_artifact(artifact, f"output/best_{task}_model.pkl")
             print(f" ✅Saved: output/best_{task}_model.pkl")
 
         elif task == "classification":
-            best_model, results = train_classification(df, target=args.target, cv=5)
+            best_model, results = train_classification(df, target=target, cv=5)
 
             print("\n Model Comparison (Classification):")
             for r in results:
@@ -224,25 +202,25 @@ def main(data_path, cv=2):
             print("Reason: Highest performance on validation data")
 
             # save model with metadata;
-            artifact = {"model": best_model, "target": args.target, "task": task}
+            artifact = {"model": best_model, "target": target, "task": task}
             save_artifact(artifact, f"output/best_{task}_model.pkl")
             print(f"✅ Saved: output/best_{task}_model.pkl")
 
             # after best_model ready (in regression/classification);
 
             # Predict on training data (optional);
-            if args.predict_on_train:
+            if predict_on_train:
                 predict_to_csv(
                     best_model,
                     df,
-                    target=args.target,
+                    target=target,
                     save_path="output/predictions_train.csv",
                 )
                 print("✅ Train predictions saved: output/predictions_train.csv")
 
             # Predict on new CSV (optional);
-            if args.predict:
-                new_df = pd.read_csv(args.predict)
+            if predict:
+                new_df = pd.read_csv(predict)
                 predict_to_csv(
                     best_model,
                     new_df,
