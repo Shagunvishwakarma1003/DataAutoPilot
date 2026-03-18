@@ -8,17 +8,16 @@ st.write("Automated Data Science Pipeline")
 
 st.caption("⚡Build with Python, Scikit-learn, SHAP & Streamlit")
 
+st.caption("Created by Shagun Vishwakarma")
+st.markdown("### 🌐 Connect with me")
+
 col1, col2 = st.columns(2)
+
 with col1:
     st.link_button ("💻GitHub", "https://github.com/Shagunvishwakarma1003/DataAutoPilot")
-    
 with col2:
     st.link_button("🔗LinkedIn", "https://www.linkedin.com/in/shagun1003/")
 
-st.markdown("### 🌐 Connect with me")
-
-
-st.caption("Created by Shagun Vishwakarma")
 os.makedirs("output", exist_ok=True)
 os.makedirs("output/eda", exist_ok=True)
 uploaded_file = st.file_uploader("Upload CSV dataset", type=["csv"])
