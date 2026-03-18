@@ -8,6 +8,13 @@ st.write("Automated Data Science Pipeline")
 
 st.caption("⚡Build with Python, Scikit-learn, SHAP & Streamlit")
 
+st.markdown(
+    """
+    💻 **GitHub:** https://github.com/Shagunvishwakarma1003/DataAutoPilot
+    🔗 **LinkedIn:** https://www.linkedin.com/in/shagun1003/
+    """
+)
+
 st.caption("Created by Shagun Vishwakarma")
 os.makedirs("output", exist_ok=True)
 os.makedirs("output/eda", exist_ok=True)
