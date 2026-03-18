@@ -11,12 +11,14 @@ st.caption("⚡Build with Python, Scikit-learn, SHAP & Streamlit")
 st.caption("Created by Shagun Vishwakarma")
 st.markdown("### 🌐 Connect with me")
 
-col1, col2 = st.columns([1,1])
+col1, col2, col3 = st.columns([1, 2, 1])
 
-with col1:
-    st.link_button ("💻GitHub", "https://github.com/Shagunvishwakarma1003/DataAutoPilot")
 with col2:
-    st.link_button("🔗LinkedIn", "https://www.linkedin.com/in/shagun1003/")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.link_button ("💻GitHub", "https://github.com/Shagunvishwakarma1003/DataAutoPilot")
+    with c2:
+        st.link_button("🔗LinkedIn", "https://www.linkedin.com/in/shagun1003/")
 
 os.makedirs("output", exist_ok=True)
 os.makedirs("output/eda", exist_ok=True)
