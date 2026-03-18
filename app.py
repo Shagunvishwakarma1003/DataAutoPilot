@@ -11,7 +11,7 @@ st.caption("⚡Build with Python, Scikit-learn, SHAP & Streamlit")
 st.caption("Created by Shagun Vishwakarma")
 st.markdown("### 🌐 Connect with me")
 
-col1, col2 = st.columns(2)
+col1, col2 = st.columns([1,1])
 
 with col1:
     st.link_button ("💻GitHub", "https://github.com/Shagunvishwakarma1003/DataAutoPilot")
