@@ -69,7 +69,8 @@ Run the app
 streamlit run app.py
 
 ---
-
+DataAuto Pilot Upgraded version Coming soon...
+---
 # 👨‍💻 Author
 Shagun Vishwakarma
 
