@@ -19,7 +19,7 @@ Users can simply upload a dataset and the system will automatically build the ML
 
 Try the live app:
 
-https://dataautopilot-mryjltzbabpvmh4juef7cm.streamlit.app
+https://dataautopilot-mryjltzbabpvhm4juef7cm.streamlit.app/
 
 ---
 
